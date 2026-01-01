@@ -1,11 +1,26 @@
 from crewai import Agent
-
 from Tools import yt_tool
+from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import os
+os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+os.environ["GOOGLE_MODEL_NAME"]="gemini-1.5-pro"
+
+# Initialize Gemini LLM
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-pro",
+    temperature=0.3
+)
+
+
 
 # Agent --> 1
 ## create first Researcher Agent 
 
-Blog_researcher = Agent (
+blog_researcher = Agent (
 
     role="Blog Researcher from Youtube Channel",
     goal = "get the relevant video content for the topic {topic} from yt channel",
@@ -14,7 +29,7 @@ Blog_researcher = Agent (
     backstory= (
         "Expert in understanding videos of AI, machine learning and gen ai and providing suggestion"
     ),
-
+    llm=llm,
     tools = [yt_tool],
     allow_delegation = True  # output pass to further or not 
 
@@ -36,6 +51,7 @@ blog_writer = Agent(
         "engaging narratives that captivate and educate, bringing new"
         "discoveries to light in an accessible manner"
     ),
+    llm = llm,
     tools = [yt_tool],
     allow_delegation = False
 )
