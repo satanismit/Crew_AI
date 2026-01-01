@@ -1,5 +1,7 @@
 from crewai import Agent
 
+from Tools import yt_tool
+
 # Agent --> 1
 ## create first Researcher Agent 
 
@@ -13,7 +15,7 @@ Blog_researcher = Agent (
         "Expert in understanding videos of AI, machine learning and gen ai and providing suggestion"
     ),
 
-    tools = [],
+    tools = [yt_tool],
     allow_delegation = True  # output pass to further or not 
 
 )
@@ -34,7 +36,7 @@ blog_writer = Agent(
         "engaging narratives that captivate and educate, bringing new"
         "discoveries to light in an accessible manner"
     ),
-    tools = [],
+    tools = [yt_tool],
     allow_delegation = False
 )
 
